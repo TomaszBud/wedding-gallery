@@ -9,7 +9,7 @@
     <title>Dawid &amp; Maciej — galeria weselna</title>
 
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./styles.css?v=20260912-2">
 
     <script src="./config.js" defer></script>
     <script src="./auth.js" defer></script>
@@ -50,39 +50,36 @@
                     Zachowajmy ten dzień z każdej perspektywy.
                 </p>
             </div>
-
-            <svg
-                class="alpine-landscape"
-                viewBox="0 0 900 210"
-                role="img"
-                aria-label="Góry i las"
-                data-i18n-aria-label="landscapeLabel"
-                preserveAspectRatio="none"
-            >
-                <path
-                    class="mountain mountain--far"
-                    d="M0 144 100 69l48 36 95-83 88 87 49-38 81 65 87-103 67 70 50-38 125 79v66H0Z"
-                />
-
-                <path
-                    class="mountain mountain--near"
-                    d="m0 167 90-63 60 45 92-68 87 67 70-51 84 61 85-69 83 58 78-73 71 57 100-47v126H0Z"
-                />
-
-                <path
-                    class="snow"
-                    d="m501 92 47-59 31 33-18-10-13 17-12-13-35 32Zm-307 32 49-102 48 47-26-14-23 25-13-16-35 60Z"
-                />
-
-                <g class="trees">
-                    <path
-                        d="m40 184 22-58 22 58h-15v26H55v-26Zm65 7 18-48 18 48h-12v19h-12v-19Zm588-4 21-56 21 56h-14v23h-14v-23Zm55 6 17-45 17 45h-11v17h-12v-17Zm66-7 23-61 23 61h-16v24h-15v-24Z"
-                    />
-                </g>
-            </svg>
         </header>
 
         <main id="appContent">
+            <section class="upload-card" aria-labelledby="uploadCardTitle">
+                <div class="upload-card__copy">
+                    <p class="eyebrow eyebrow--dark" data-i18n="fromYourPerspective">
+                        Z Twojej perspektywy
+                    </p>
+
+                    <h2 id="uploadCardTitle" data-i18n="addToGallery">
+                        Dodaj do galerii
+                    </h2>
+                </div>
+
+                <button
+                    id="openUploadButton"
+                    class="upload-trigger"
+                    type="button"
+                    disabled
+                >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 13v6h14v-6"/>
+                    </svg>
+
+                    <span data-i18n="addPhoto">
+                        Dodaj zdjęcie
+                    </span>
+                </button>
+            </section>
+
             <section
                 id="gallerySection"
                 class="gallery-section"
@@ -152,21 +149,6 @@
             </p>
         </section>
     </div>
-
-    <button
-        id="openUploadButton"
-        class="floating-action"
-        type="button"
-        disabled
-    >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 13v6h14v-6"/>
-        </svg>
-
-        <span data-i18n="addPhoto">
-            Dodaj zdjęcie
-        </span>
-    </button>
 
     <dialog
         id="uploadDialog"
