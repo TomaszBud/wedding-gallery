@@ -12,8 +12,9 @@ __pycache__/
 .venv/
 venv/
 hash*
-backend/package/
-backend/layer/
+backend/functions/finalize_upload/build/PIL/*
+backend/functions/finalize_upload/build/pillow*
+backend/functions/finalize_upload/build/PIL/_pillow*
 
 # IDE
 .idea/
