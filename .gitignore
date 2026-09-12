@@ -3,6 +3,7 @@
 *.tfstate
 *.tfstate.*
 *.tfvars
+.terraform.lock.hcl.backup
 
 
 # Python
@@ -11,6 +12,8 @@ __pycache__/
 .venv/
 venv/
 hash*
+backend/package/
+backend/layer/
 
 # IDE
 .idea/
@@ -22,6 +25,8 @@ hash*
 # Secrets
 .env
 .env.*
+*.pem
+*.key
 
 
 *.zip
