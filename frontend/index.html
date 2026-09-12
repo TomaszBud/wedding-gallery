@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Zdjęcia weselne</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<main>
+    <label for="authorInput">
+        Twoje imię
+    </label>
+
+    <input
+        id="authorInput"
+        type="text"
+        maxlength="80"
+        placeholder="np. Kasia"
+    >
+
+    <h1>Dodaj zdjęcie 📸</h1>
+
+    <p>
+        Wybierz zdjęcie z telefonu lub komputera.
+    </p>
+
+    <input
+        id="photoInput"
+        type="file"
+        accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+    >
+
+    <button id="uploadButton">
+        Wyślij zdjęcie
+    </button>
+
+    <p id="status"></p>
+
+    <hr>
+
+    <section>
+        <h2>Zdjęcia</h2>
+
+        <button id="refreshButton">
+            Odśwież galerię
+        </button>
+
+        <p id="galleryStatus"></p>
+
+        <div id="gallery"></div>
+    </section>
+</main>
+
+<script src="./config.js"></script>
+<script src="./auth.js"></script>
+<script src="./app.js"></script>
+
+</body>
+</html>
