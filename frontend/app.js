@@ -136,8 +136,8 @@ uploadButton.addEventListener(
 
 async function requestUpload(file) {
 
-    const response = await apiFetch(
-        `${API_BASE_URL}/uploads`,
+    const response = await WeddingAuth.apiFetch(
+        `/uploads`,
         {
             method: "POST",
 
