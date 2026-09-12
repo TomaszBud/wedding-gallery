@@ -14,7 +14,7 @@ venv/
 hash*
 backend/functions/finalize_upload/build/PIL/*
 backend/functions/finalize_upload/build/pillow*
-backend/functions/finalize_upload/build/PIL/_pillow*
+backend/functions/finalize_upload/build/_pillow*
 
 # IDE
 .idea/
