@@ -1,64 +1,407 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#233b2c">
+    <meta name="description" content="Wspólna galeria weselna Dawida i Macieja">
 
-    <title>Zdjęcia weselne</title>
+    <title>Dawid &amp; Maciej — galeria weselna</title>
 
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css">
+
+    <script src="./config.js" defer></script>
+    <script src="./auth.js" defer></script>
+    <script src="./app.js" defer></script>
 </head>
 
 <body>
+    <div class="page-shell">
+        <header class="hero">
+            <div class="hero__topbar">
+                <a
+                    class="monogram"
+                    href="#gallerySection"
+                    aria-label="Dawid i Maciej"
+                >
+                    D <span aria-hidden="true">✦</span> M
+                </a>
 
-<main>
-    <label for="authorInput">
-        Twoje imię
-    </label>
+                <span
+                    id="languageBadge"
+                    class="language-badge"
+                    aria-label="Language"
+                >
+                    PL
+                </span>
+            </div>
 
-    <input
-        id="authorInput"
-        type="text"
-        maxlength="80"
-        placeholder="np. Kasia"
+            <div class="hero__copy">
+                <p class="eyebrow" data-i18n="weddingGallery">
+                    Galeria weselna
+                </p>
+
+                <h1>
+                    Dawid <span>&amp;</span> Maciej
+                </h1>
+
+                <p class="hero__lead" data-i18n="heroLead">
+                    Zachowajmy ten dzień z każdej perspektywy.
+                </p>
+            </div>
+
+            <svg
+                class="alpine-landscape"
+                viewBox="0 0 900 210"
+                role="img"
+                aria-label="Góry i las"
+                data-i18n-aria-label="landscapeLabel"
+                preserveAspectRatio="none"
+            >
+                <path
+                    class="mountain mountain--far"
+                    d="M0 144 100 69l48 36 95-83 88 87 49-38 81 65 87-103 67 70 50-38 125 79v66H0Z"
+                />
+
+                <path
+                    class="mountain mountain--near"
+                    d="m0 167 90-63 60 45 92-68 87 67 70-51 84 61 85-69 83 58 78-73 71 57 100-47v126H0Z"
+                />
+
+                <path
+                    class="snow"
+                    d="m501 92 47-59 31 33-18-10-13 17-12-13-35 32Zm-307 32 49-102 48 47-26-14-23 25-13-16-35 60Z"
+                />
+
+                <g class="trees">
+                    <path
+                        d="m40 184 22-58 22 58h-15v26H55v-26Zm65 7 18-48 18 48h-12v19h-12v-19Zm588-4 21-56 21 56h-14v23h-14v-23Zm55 6 17-45 17 45h-11v17h-12v-17Zm66-7 23-61 23 61h-16v24h-15v-24Z"
+                    />
+                </g>
+            </svg>
+        </header>
+
+        <main id="appContent">
+            <section
+                id="gallerySection"
+                class="gallery-section"
+                aria-labelledby="galleryTitle"
+            >
+                <div class="section-heading">
+                    <div>
+                        <p
+                            class="eyebrow eyebrow--dark"
+                            data-i18n="sharedMoments"
+                        >
+                            Wspólne chwile
+                        </p>
+
+                        <h2 id="galleryTitle" data-i18n="photos">
+                            Zdjęcia
+                        </h2>
+                    </div>
+
+                    <button
+                        id="refreshButton"
+                        class="icon-button"
+                        type="button"
+                        data-i18n-aria-label="refreshGallery"
+                        aria-label="Odśwież galerię"
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M20 11a8.1 8.1 0 0 0-15.5-2M4 4v5h5m-5 4a8.1 8.1 0 0 0 15.5 2M20 20v-5h-5"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <p
+                    id="galleryStatus"
+                    class="gallery-status"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+
+                <div id="gallery" class="gallery" aria-busy="true">
+                    <div class="skeleton skeleton--tall"></div>
+                    <div class="skeleton"></div>
+                    <div class="skeleton"></div>
+                    <div class="skeleton skeleton--tall"></div>
+                </div>
+            </section>
+        </main>
+
+        <section id="accessRequired" class="access-card" hidden>
+            <div class="access-card__mark" aria-hidden="true">
+                D <span>✦</span> M
+            </div>
+
+            <p
+                class="eyebrow eyebrow--dark"
+                data-i18n="privateGallery"
+            >
+                Prywatna galeria
+            </p>
+
+            <h2 data-i18n="scanQrTitle">
+                Zeskanuj kod QR
+            </h2>
+
+            <p data-i18n="scanQrBody">
+                Dostęp do galerii otrzymasz z zaproszenia dostępnego na weselu.
+            </p>
+        </section>
+    </div>
+
+    <button
+        id="openUploadButton"
+        class="floating-action"
+        type="button"
+        disabled
     >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 13v6h14v-6"/>
+        </svg>
 
-    <h1>Dodaj zdjęcie 📸</h1>
-
-    <p>
-        Wybierz zdjęcie z telefonu lub komputera.
-    </p>
-
-    <input
-        id="photoInput"
-        type="file"
-        accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
-    >
-
-    <button id="uploadButton">
-        Wyślij zdjęcie
+        <span data-i18n="addPhoto">
+            Dodaj zdjęcie
+        </span>
     </button>
 
-    <p id="status"></p>
+    <dialog
+        id="uploadDialog"
+        class="sheet"
+        aria-labelledby="uploadDialogTitle"
+    >
+        <div class="sheet__handle" aria-hidden="true"></div>
 
-    <hr>
+        <div class="sheet__header">
+            <div>
+                <p
+                    class="eyebrow eyebrow--dark"
+                    data-i18n="fromYourPerspective"
+                >
+                    Z Twojej perspektywy
+                </p>
 
-    <section>
-        <h2>Zdjęcia</h2>
+                <h2
+                    id="uploadDialogTitle"
+                    data-i18n="addToGallery"
+                >
+                    Dodaj do galerii
+                </h2>
+            </div>
 
-        <button id="refreshButton">
-            Odśwież galerię
-        </button>
+            <button
+                id="closeUploadButton"
+                class="icon-button icon-button--small"
+                type="button"
+                data-i18n-aria-label="close"
+                aria-label="Zamknij"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m6 6 12 12M18 6 6 18"/>
+                </svg>
+            </button>
+        </div>
 
-        <p id="galleryStatus"></p>
+        <form id="uploadForm" novalidate>
+            <label
+                class="field-label"
+                for="authorInput"
+                data-i18n="yourName"
+            >
+                Twoje imię
+            </label>
 
-        <div id="gallery"></div>
-    </section>
-</main>
+            <input
+                id="authorInput"
+                class="text-input"
+                type="text"
+                maxlength="80"
+                autocomplete="name"
+                data-i18n-placeholder="namePlaceholder"
+                placeholder="np. Kasia"
+            >
 
-<script src="./config.js"></script>
-<script src="./auth.js"></script>
-<script src="./app.js"></script>
+            <fieldset class="picker-fieldset">
+                <legend data-i18n="choosePhoto">
+                    Wybierz zdjęcie
+                </legend>
 
+                <div class="picker-grid">
+                    <button
+                        id="cameraButton"
+                        class="picker-button"
+                        type="button"
+                    >
+                        <span class="picker-button__icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M4 7h3l1.5-2h7L17 7h3v12H4V7Zm8 9a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/>
+                            </svg>
+                        </span>
+
+                        <span data-i18n="takePhoto">
+                            Zrób zdjęcie
+                        </span>
+                    </button>
+
+                    <button
+                        id="libraryButton"
+                        class="picker-button"
+                        type="button"
+                    >
+                        <span class="picker-button__icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M4 5h16v14H4V5Zm0 10 4.5-4.5 3.5 3.5 2-2 6 6M16.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/>
+                            </svg>
+                        </span>
+
+                        <span data-i18n="chooseFromLibrary">
+                            Wybierz z galerii
+                        </span>
+                    </button>
+                </div>
+
+                <input
+                    id="cameraInput"
+                    class="visually-hidden"
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+                    capture="environment"
+                >
+
+                <input
+                    id="photoInput"
+                    class="visually-hidden"
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+                >
+            </fieldset>
+
+            <div id="selectedPhoto" class="selected-photo" hidden>
+                <div class="selected-photo__preview">
+                    <img id="selectedPhotoPreview" alt="">
+
+                    <div
+                        id="previewFallback"
+                        class="preview-fallback"
+                        hidden
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h16v14H4V5Zm0 10 4.5-4.5 3.5 3.5 2-2 6 6"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="selected-photo__details">
+                    <strong id="selectedPhotoName"></strong>
+                    <span id="selectedPhotoSize"></span>
+                </div>
+
+                <button
+                    id="removePhotoButton"
+                    class="icon-button icon-button--small"
+                    type="button"
+                    data-i18n-aria-label="removePhoto"
+                    aria-label="Usuń zdjęcie"
+                >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="m6 6 12 12M18 6 6 18"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div id="uploadProgress" class="upload-progress" hidden>
+                <div class="upload-progress__track">
+                    <span id="uploadProgressBar"></span>
+                </div>
+
+                <p
+                    id="status"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+            </div>
+
+            <button
+                id="uploadButton"
+                class="primary-button"
+                type="submit"
+                disabled
+            >
+                <span data-i18n="sendPhoto">
+                    Wyślij zdjęcie
+                </span>
+
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M5 12h14m-5-5 5 5-5 5"/>
+                </svg>
+            </button>
+
+            <p class="form-hint" data-i18n="fileHint">
+                JPG, PNG, WebP lub HEIC · maks. 20 MB
+            </p>
+        </form>
+    </dialog>
+
+    <dialog
+        id="lightbox"
+        class="lightbox"
+        data-i18n-aria-label="weddingPhoto"
+        aria-label="Zdjęcie z wesela Dawida i Macieja"
+    >
+        <div class="lightbox__toolbar">
+            <div
+                id="lightboxMeta"
+                class="lightbox__meta"
+            ></div>
+
+            <a
+                id="downloadPhotoButton"
+                class="lightbox__button"
+                href="#"
+                target="_blank"
+                rel="noopener"
+                download
+                data-i18n-aria-label="downloadOriginal"
+                aria-label="Pobierz oryginał"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 4v12m0 0 4.5-4.5M12 16l-4.5-4.5M5 20h14"/>
+                </svg>
+            </a>
+
+            <button
+                id="closeLightboxButton"
+                class="lightbox__button"
+                type="button"
+                data-i18n-aria-label="close"
+                aria-label="Zamknij"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m6 6 12 12M18 6 6 18"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="lightbox__stage">
+            <img id="lightboxImage" alt="">
+        </div>
+    </dialog>
+
+    <div
+        id="toast"
+        class="toast"
+        role="status"
+        aria-live="polite"
+        hidden
+    ></div>
+
+    <noscript>
+        <div class="noscript">
+            Ta galeria wymaga włączonego JavaScript.
+        </div>
+    </noscript>
 </body>
 </html>
