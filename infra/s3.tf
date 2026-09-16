@@ -36,9 +36,9 @@ resource "aws_s3_bucket_cors_configuration" "photos" {
       "POST"
     ]
 
-    # dev only, put gh pages later.
     allowed_origins = [
-      "http://localhost:8000"
+      "http://localhost:8000",
+      "https://tomaszbud.github.io"
     ]
 
     expose_headers  = ["ETag"]
