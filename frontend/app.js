@@ -993,6 +993,8 @@ async function handleUpload(event) {
             uploadData.upload
         );
 
+        await sleep(2000)
+
         setUploadStatus(
             translate(
                 "processingPhoto"
@@ -1083,6 +1085,10 @@ async function requestUpload(
     }
 
     return response.json();
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function uploadToS3(
