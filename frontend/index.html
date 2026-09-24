@@ -9,11 +9,14 @@
     <title>Dawid &amp; Maciej — galeria weselna</title>
 
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="stylesheet" href="./styles.css?v=20260912-2">
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/gallery.css">
+    <link rel="stylesheet" href="./css/upload.css">
+    <link rel="stylesheet" href="./css/lightbox.css">
+    <link rel="stylesheet" href="./css/utilities.css">
+    <link rel="stylesheet" href="./css/responsive.css">
 
-    <script src="./config.js" defer></script>
-    <script src="./auth.js" defer></script>
-    <script src="./app.js" defer></script>
+    <script type="module" src="./js/main.js"></script>
 </head>
 
 <body>
@@ -28,13 +31,20 @@
                     D <span aria-hidden="true">✦</span> M
                 </a>
 
-                <span
-                    id="languageBadge"
-                    class="language-badge"
-                    aria-label="Language"
+                <select
+                    id="languageSelect"
+                    class="language-select"
+                    aria-label="Wybierz język / Choose language"
                 >
-                    PL
-                </span>
+                    <option value="pl">Polski</option>
+                    <option value="en">English</option>
+                    <option value="de">Deutsch</option>
+                    <option value="fr">Français</option>
+                    <option value="it">Italiano</option>
+                    <option value="ru">Русский</option>
+                    <option value="es">Español</option>
+                    <option value="ar-DZ" dir="rtl">العربية (الجزائر)</option>
+                </select>
             </div>
 
             <div class="hero__copy">
@@ -150,228 +160,7 @@
         </section>
     </div>
 
-    <dialog
-        id="uploadDialog"
-        class="sheet"
-        aria-labelledby="uploadDialogTitle"
-    >
-        <div class="sheet__handle" aria-hidden="true"></div>
-
-        <div class="sheet__header">
-            <div>
-                <p
-                    class="eyebrow eyebrow--dark"
-                    data-i18n="fromYourPerspective"
-                >
-                    Z Twojej perspektywy
-                </p>
-
-                <h2
-                    id="uploadDialogTitle"
-                    data-i18n="addToGallery"
-                >
-                    Dodaj do galerii
-                </h2>
-            </div>
-
-            <button
-                id="closeUploadButton"
-                class="icon-button icon-button--small"
-                type="button"
-                data-i18n-aria-label="close"
-                aria-label="Zamknij"
-            >
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="m6 6 12 12M18 6 6 18"/>
-                </svg>
-            </button>
-        </div>
-
-        <form id="uploadForm" novalidate>
-            <label
-                class="field-label"
-                for="authorInput"
-                data-i18n="yourName"
-            >
-                Twoje imię
-            </label>
-
-            <input
-                id="authorInput"
-                class="text-input"
-                type="text"
-                maxlength="80"
-                autocomplete="name"
-                data-i18n-placeholder="namePlaceholder"
-                placeholder="np. Kasia"
-            >
-
-            <fieldset class="picker-fieldset">
-                <legend data-i18n="choosePhoto">
-                    Wybierz zdjęcie
-                </legend>
-
-                <div class="picker-grid">
-                    <button
-                        id="cameraButton"
-                        class="picker-button"
-                        type="button"
-                    >
-                        <span class="picker-button__icon">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M4 7h3l1.5-2h7L17 7h3v12H4V7Zm8 9a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/>
-                            </svg>
-                        </span>
-
-                        <span data-i18n="takePhoto">
-                            Zrób zdjęcie
-                        </span>
-                    </button>
-
-                    <button
-                        id="libraryButton"
-                        class="picker-button"
-                        type="button"
-                    >
-                        <span class="picker-button__icon">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M4 5h16v14H4V5Zm0 10 4.5-4.5 3.5 3.5 2-2 6 6M16.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/>
-                            </svg>
-                        </span>
-
-                        <span data-i18n="chooseFromLibrary">
-                            Wybierz z galerii
-                        </span>
-                    </button>
-                </div>
-
-                <input
-                    id="cameraInput"
-                    class="visually-hidden"
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
-                    capture="environment"
-                >
-
-                <input
-                    id="photoInput"
-                    class="visually-hidden"
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
-                    multiple
-                >
-            </fieldset>
-
-            <div id="selectedPhoto" class="selected-photo" hidden>
-                <div class="selected-photo__preview">
-                    <img id="selectedPhotoPreview" alt="">
-
-                    <div
-                        id="previewFallback"
-                        class="preview-fallback"
-                        hidden
-                    >
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M4 5h16v14H4V5Zm0 10 4.5-4.5 3.5 3.5 2-2 6 6"/>
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="selected-photo__details">
-                    <strong id="selectedPhotoName"></strong>
-                    <span id="selectedPhotoSize"></span>
-                </div>
-
-                <button
-                    id="removePhotoButton"
-                    class="icon-button icon-button--small"
-                    type="button"
-                    data-i18n-aria-label="removePhoto"
-                    aria-label="Usuń zdjęcie"
-                >
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="m6 6 12 12M18 6 6 18"/>
-                    </svg>
-                </button>
-            </div>
-
-            <div id="uploadProgress" class="upload-progress" hidden>
-                <div class="upload-progress__track">
-                    <span id="uploadProgressBar"></span>
-                </div>
-
-                <p
-                    id="status"
-                    role="status"
-                    aria-live="polite"
-                ></p>
-            </div>
-
-            <button
-                id="uploadButton"
-                class="primary-button"
-                type="submit"
-                disabled
-            >
-                <span data-i18n="sendPhoto">
-                    Wyślij zdjęcie
-                </span>
-
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M5 12h14m-5-5 5 5-5 5"/>
-                </svg>
-            </button>
-
-            <p class="form-hint" data-i18n="fileHint">
-                JPG, PNG, WebP lub HEIC · maks. 20 MB
-            </p>
-        </form>
-    </dialog>
-
-    <dialog
-        id="lightbox"
-        class="lightbox"
-        data-i18n-aria-label="weddingPhoto"
-        aria-label="Zdjęcie z wesela Dawida i Macieja"
-    >
-        <div class="lightbox__toolbar">
-            <div
-                id="lightboxMeta"
-                class="lightbox__meta"
-            ></div>
-
-            <a
-                id="downloadPhotoButton"
-                class="lightbox__button"
-                href="#"
-                target="_blank"
-                rel="noopener"
-                download
-                data-i18n-aria-label="downloadOriginal"
-                aria-label="Pobierz oryginał"
-            >
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 4v12m0 0 4.5-4.5M12 16l-4.5-4.5M5 20h14"/>
-                </svg>
-            </a>
-
-            <button
-                id="closeLightboxButton"
-                class="lightbox__button"
-                type="button"
-                data-i18n-aria-label="close"
-                aria-label="Zamknij"
-            >
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="m6 6 12 12M18 6 6 18"/>
-                </svg>
-            </button>
-        </div>
-
-        <div class="lightbox__stage">
-            <img id="lightboxImage" alt="">
-        </div>
-    </dialog>
+    <div id="dialogMount"></div>
 
     <div
         id="toast"

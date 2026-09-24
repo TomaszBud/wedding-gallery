@@ -1,0 +1,264 @@
+/* Gallery */
+
+.gallery-section {
+    padding: 1rem 1rem calc(3rem + env(safe-area-inset-bottom));
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--line);
+}
+
+.icon-button {
+    display: inline-grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    flex: 0 0 auto;
+    padding: 0;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    cursor: pointer;
+}
+
+.icon-button--small {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.icon-button.is-loading svg {
+    animation: spin 0.75s linear infinite;
+}
+
+.gallery-status {
+    min-height: 1.3rem;
+    margin: 0.7rem 0 1rem;
+    color: var(--muted);
+    font-size: 0.84rem;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+}
+
+.photo-card {
+    min-width: 0;
+    overflow: hidden;
+    border-radius: 9px;
+    background: var(--green-100);
+}
+
+.photo-card__button {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    background: transparent;
+    cursor: zoom-in;
+}
+
+.photo-card__button::after {
+    position: absolute;
+    inset: auto 0 0;
+    height: 38%;
+    background: linear-gradient(transparent, rgba(18, 27, 20, 0.68));
+    content: "";
+    pointer-events: none;
+}
+
+.photo-card img {
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--photo-ratio, 4 / 5);
+    object-fit: cover;
+}
+
+.photo-card__author {
+    position: absolute;
+    z-index: 1;
+    right: 0.65rem;
+    bottom: 0.55rem;
+    left: 0.65rem;
+    overflow: hidden;
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 650;
+    text-align: left;
+    text-overflow: ellipsis;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+    white-space: nowrap;
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    padding: 2.5rem 1rem;
+    border: 1px dashed var(--brown-200);
+    border-radius: var(--radius);
+    color: var(--muted);
+    text-align: center;
+}
+
+.empty-state svg,
+.preview-fallback svg {
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: 0.6rem;
+    fill: none;
+    stroke: var(--brown-700);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.5;
+}
+
+.skeleton {
+    min-height: 12rem;
+    border-radius: 9px;
+    background: linear-gradient(100deg, #eceee9 30%, #f7f7f3 50%, #eceee9 70%);
+    background-size: 220% 100%;
+    animation: shimmer 1.4s infinite;
+}
+
+.skeleton--tall {
+    min-height: 16rem;
+}
+/* Gallery */
+
+.gallery-section {
+    padding: 1rem 1rem calc(3rem + env(safe-area-inset-bottom));
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--line);
+}
+
+.icon-button {
+    display: inline-grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    flex: 0 0 auto;
+    padding: 0;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    cursor: pointer;
+}
+
+.icon-button--small {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.icon-button.is-loading svg {
+    animation: spin 0.75s linear infinite;
+}
+
+.gallery-status {
+    min-height: 1.3rem;
+    margin: 0.7rem 0 1rem;
+    color: var(--muted);
+    font-size: 0.84rem;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+}
+
+.photo-card {
+    min-width: 0;
+    overflow: hidden;
+    border-radius: 9px;
+    background: var(--green-100);
+}
+
+.photo-card__button {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    background: transparent;
+    cursor: zoom-in;
+}
+
+.photo-card__button::after {
+    position: absolute;
+    inset: auto 0 0;
+    height: 38%;
+    background: linear-gradient(transparent, rgba(18, 27, 20, 0.68));
+    content: "";
+    pointer-events: none;
+}
+
+.photo-card img {
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--photo-ratio, 4 / 5);
+    object-fit: cover;
+}
+
+.photo-card__author {
+    position: absolute;
+    z-index: 1;
+    right: 0.65rem;
+    bottom: 0.55rem;
+    left: 0.65rem;
+    overflow: hidden;
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 650;
+    text-align: start;
+    text-overflow: ellipsis;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+    white-space: nowrap;
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    padding: 2.5rem 1rem;
+    border: 1px dashed var(--brown-200);
+    border-radius: var(--radius);
+    color: var(--muted);
+    text-align: center;
+}
+
+.empty-state svg,
+.preview-fallback svg {
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: 0.6rem;
+    fill: none;
+    stroke: var(--brown-700);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.5;
+}
+
+.skeleton {
+    min-height: 12rem;
+    border-radius: 9px;
+    background: linear-gradient(100deg, #eceee9 30%, #f7f7f3 50%, #eceee9 70%);
+    background-size: 220% 100%;
+    animation: shimmer 1.4s infinite;
+}
+
+.skeleton--tall {
+    min-height: 16rem;
+}
