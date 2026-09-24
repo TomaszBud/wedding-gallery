@@ -1,0 +1,44 @@
+<dialog
+        id="lightbox"
+        class="lightbox"
+        data-i18n-aria-label="weddingPhoto"
+        aria-label="Zdjęcie z wesela Dawida i Macieja"
+    >
+        <div class="lightbox__toolbar">
+            <div
+                id="lightboxMeta"
+                class="lightbox__meta"
+            ></div>
+
+            <a
+                id="downloadPhotoButton"
+                class="lightbox__button"
+                href="#"
+                target="_blank"
+                rel="noopener"
+                download
+                data-i18n-aria-label="downloadOriginal"
+                aria-label="Pobierz oryginał"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 4v12m0 0 4.5-4.5M12 16l-4.5-4.5M5 20h14"/>
+                </svg>
+            </a>
+
+            <button
+                id="closeLightboxButton"
+                class="lightbox__button"
+                type="button"
+                data-i18n-aria-label="close"
+                aria-label="Zamknij"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m6 6 12 12M18 6 6 18"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="lightbox__stage">
+            <img id="lightboxImage" alt="">
+        </div>
+    </dialog>

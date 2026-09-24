@@ -1,0 +1,52 @@
+/* Feedback and utilities */
+
+.toast {
+    position: fixed;
+    z-index: 30;
+    right: 1rem;
+    bottom: calc(1rem + env(safe-area-inset-bottom));
+    left: 1rem;
+    max-width: 28rem;
+    margin: 0 auto;
+    padding: 0.9rem 1rem;
+    border-radius: 10px;
+    color: #fff;
+    background: var(--green-900);
+    box-shadow: var(--shadow);
+    font-size: 0.86rem;
+    text-align: center;
+}
+
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+.noscript {
+    position: fixed;
+    inset: auto 1rem 1rem;
+    z-index: 40;
+    padding: 0.9rem;
+    border-radius: 8px;
+    color: #fff;
+    background: var(--danger);
+    text-align: center;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes shimmer {
+    to {
+        background-position: -220% 0;
+    }
+}

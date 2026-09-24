@@ -1,0 +1,85 @@
+@media (min-width: 42rem) {
+    body {
+        padding: 2rem;
+    }
+
+    .page-shell {
+        overflow: hidden;
+        border: 1px solid #e1e1da;
+        border-radius: 18px;
+        box-shadow: 0 18px 55px rgba(33, 45, 35, 0.1);
+    }
+
+    .hero {
+        padding-right: 2.5rem;
+        padding-bottom: 3.5rem;
+        padding-left: 2.5rem;
+    }
+
+    .upload-card {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        margin: 1.5rem 2.5rem;
+        padding: 1.35rem 1.5rem;
+    }
+
+    .upload-trigger {
+        width: auto;
+        min-width: 12rem;
+    }
+
+    .gallery-section {
+        padding-right: 2.5rem;
+        padding-left: 2.5rem;
+    }
+
+    .gallery {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.75rem;
+    }
+
+    .sheet {
+        width: min(calc(100% - 2rem), 40rem);
+        margin: auto;
+        border-radius: 16px;
+    }
+
+    .sheet__handle {
+        display: none;
+    }
+
+    .sheet__header,
+    .sheet form {
+        padding-right: 1.5rem;
+        padding-left: 1.5rem;
+    }
+
+    .sheet__header {
+        padding-top: 1.5rem;
+    }
+
+    .sheet form {
+        padding-bottom: 1.5rem;
+    }
+}
+
+@media (min-width: 64rem) {
+    .gallery {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
