@@ -44,7 +44,8 @@ body.has-dialog {
 }
 
 button,
-input {
+input,
+select {
     font: inherit;
 }
 
@@ -59,7 +60,8 @@ button {
 
 button:focus-visible,
 a:focus-visible,
-input:focus-visible {
+input:focus-visible,
+select:focus-visible {
     outline: 3px solid var(--brown-200);
     outline-offset: 3px;
 }
@@ -103,17 +105,21 @@ input:focus-visible {
     color: #ccb28f;
 }
 
-.language-badge {
-    display: grid;
-    min-width: 2.25rem;
-    min-height: 2.25rem;
-    place-items: center;
+.language-select {
+    max-width: min(52vw, 11.5rem);
+    min-height: 2.75rem;
+    padding: 0.45rem 0.65rem;
     border: 1px solid rgba(255, 255, 255, 0.32);
-    border-radius: 999px;
-    color: rgba(255, 255, 255, 0.82);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    border-radius: 8px;
+    color: #fff;
+    background: var(--green-900);
+    font-size: 0.84rem;
+    cursor: pointer;
+}
+
+.language-select option {
+    color: var(--ink);
+    background: #fff;
 }
 
 .hero__copy {

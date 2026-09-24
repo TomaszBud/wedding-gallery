@@ -1,6 +1,6 @@
 // One place for the IDs used by the UI modules.
 const ids = [
-    "appContent", "accessRequired", "languageBadge",
+    "appContent", "accessRequired", "languageSelect",
     "gallery", "galleryStatus", "refreshButton", "openUploadButton",
     "uploadDialog", "closeUploadButton", "uploadForm", "authorInput",
     "cameraButton", "libraryButton", "cameraInput", "photoInput",

@@ -1,18 +1,17 @@
 import { translations } from "./locales/index.js";
 
-function detectLocale() {
-    const preferred = navigator.languages?.length
-        ? navigator.languages
-        : [navigator.language || "en"];
+const LANGUAGE_KEY = "weddingGalleryLanguage";
 
-    for (const language of preferred) {
-        const base = language.toLowerCase().split("-")[0];
-        if (translations[base]) return base;
+function savedLocale() {
+    try {
+        const choice = localStorage.getItem(LANGUAGE_KEY);
+        return Object.hasOwn(translations, choice) ? choice : "pl";
+    } catch {
+        return "pl";
     }
-    return "en";
 }
 
-export const locale = detectLocale();
+export const locale = savedLocale();
 const pluralFormatter = new Intl.PluralRules(locale);
 const dateFormatter = new Intl.DateTimeFormat(locale, {
     day: "numeric",
@@ -52,19 +51,17 @@ export function formatFileSize(bytes) {
     }).format(bytes / (megabytes ? 1024 * 1024 : 1024));
 }
 
-export function applyTranslations(languageBadge) {
-    document.documentElement.lang = locale;
-    document.title = "Dawid & Maciej — " + translate("pageTitle");
-    languageBadge.textContent = locale.toUpperCase();
+export function setLocale(choice) {
+    if (!Object.hasOwn(translations, choice) || choice === locale) return;
+    localStorage.setItem(LANGUAGE_KEY, choice);
+    window.location.reload();
+}
 
-    try {
-        const displayNames = new Intl.DisplayNames([locale], {
-            type: "language"
-        });
-        languageBadge.setAttribute("aria-label", displayNames.of(locale));
-    } catch {
-        languageBadge.setAttribute("aria-label", locale.toUpperCase());
-    }
+export function applyTranslations(languageSelect) {
+    document.documentElement.lang = locale;
+    document.documentElement.dir = locale === "ar-DZ" ? "rtl" : "ltr";
+    document.title = "Dawid & Maciej — " + translate("pageTitle");
+    languageSelect.value = locale;
 
     document.querySelectorAll("[data-i18n]").forEach(node => {
         node.textContent = translate(node.dataset.i18n);

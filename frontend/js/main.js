@@ -1,6 +1,6 @@
 import { initAuth } from "./api/auth.js";
 import { getElements } from "./dom.js";
-import { applyTranslations, translate } from "./i18n.js";
+import { applyTranslations, setLocale, translate } from "./i18n.js";
 import { createFeedback } from "./ui/feedback.js";
 import { createGallery } from "./ui/gallery.js";
 import { createUpload } from "./ui/upload.js";
@@ -46,7 +46,10 @@ async function start() {
     try {
         await loadDialogs();
         const elements = getElements();
-        applyTranslations(elements.languageBadge);
+        applyTranslations(elements.languageSelect);
+        elements.languageSelect.addEventListener("change", event => {
+            setLocale(event.target.value);
+        });
 
         const feedback = createFeedback(elements);
         const gallery = createGallery(elements, feedback);
