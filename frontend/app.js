@@ -56,6 +56,9 @@ const translations = {
             "Gotowe — zdjęcie jest przetwarzane.",
         uploadFailed:
             "Nie udało się wysłać zdjęcia. Spróbuj ponownie.",
+        uploadingPhotoProgress: "Wysyłam zdjęcie {current} z {total}…",
+        uploadPartialFailure: "Wysłano {uploaded} z {total}. Błąd przy {name}. Spróbuj ponownie.",
+        uploadToastMany: "Wysłano {count} zdjęć! Za chwilę pojawią się w galerii.",
         uploadToast:
             "Zdjęcie wysłane! Za chwilę pojawi się w galerii.",
         anonymous: "Gość weselny",
@@ -133,6 +136,9 @@ const translations = {
             "Done — your photo is being processed.",
         uploadFailed:
             "We couldn’t upload the photo. Please try again.",
+        uploadingPhotoProgress: "Uploading photo {current} of {total}…",
+        uploadPartialFailure: "Uploaded {uploaded} of {total}. Couldn’t send {name}. Please retry.",
+        uploadToastMany: "{count} photos sent! They’ll appear in the gallery shortly.",
         uploadToast:
             "Photo sent! It will appear in the gallery shortly.",
         anonymous:
@@ -211,6 +217,9 @@ const translations = {
             "Fertig — dein Foto wird verarbeitet.",
         uploadFailed:
             "Das Foto konnte nicht hochgeladen werden. Bitte versuche es erneut.",
+        uploadingPhotoProgress: "Foto {current} von {total} wird hochgeladen…",
+        uploadPartialFailure: "{uploaded} von {total} hochgeladen. Fehler bei {name}. Bitte erneut versuchen.",
+        uploadToastMany: "{count} Fotos gesendet! Sie erscheinen gleich in der Galerie.",
         uploadToast:
             "Foto gesendet! Es erscheint gleich in der Galerie.",
         anonymous:
@@ -292,6 +301,9 @@ const translations = {
             "C’est fait — votre photo est en cours de traitement.",
         uploadFailed:
             "Impossible d’envoyer la photo. Réessayez.",
+        uploadingPhotoProgress: "Envoi de la photo {current} sur {total}…",
+        uploadPartialFailure: "{uploaded} sur {total} envoyées. Échec pour {name}. Réessayez.",
+        uploadToastMany: "{count} photos envoyées ! Elles apparaîtront bientôt dans la galerie.",
         uploadToast:
             "Photo envoyée ! Elle apparaîtra bientôt dans la galerie.",
         anonymous:
@@ -373,6 +385,9 @@ const translations = {
             "Fatto — la foto è in elaborazione.",
         uploadFailed:
             "Non è stato possibile inviare la foto. Riprova.",
+        uploadingPhotoProgress: "Invio della foto {current} di {total}…",
+        uploadPartialFailure: "Inviate {uploaded} su {total}. Errore per {name}. Riprova.",
+        uploadToastMany: "{count} foto inviate! Appariranno a breve nella galleria.",
         uploadToast:
             "Foto inviata! Apparirà a breve nella galleria.",
         anonymous:
@@ -498,7 +513,8 @@ const elements = {
         document.getElementById("toast")
 };
 
-let selectedFile = null;
+let selectedFiles = [];
+let isUploading = false;
 let previewUrl = null;
 let toastTimer = null;
 let lastGalleryLoad = 0;
@@ -674,7 +690,7 @@ function bindEvents() {
 
     elements.removePhotoButton.addEventListener(
         "click",
-        clearSelectedFile
+        clearSelectedFiles
     );
 
     elements.uploadForm.addEventListener(
@@ -691,6 +707,13 @@ function bindEvents() {
     elements.uploadDialog.addEventListener(
         "close",
         updateBodyDialogState
+    );
+
+    elements.uploadDialog.addEventListener(
+        "cancel",
+        event => {
+            if (isUploading) event.preventDefault();
+        }
     );
 
     elements.lightbox.addEventListener(
@@ -765,6 +788,7 @@ function openUploadDialog() {
 
 function closeOnBackdrop(event) {
     if (
+        !isUploading &&
         event.target ===
         event.currentTarget
     ) {
@@ -781,96 +805,65 @@ function updateBodyDialogState() {
 }
 
 function handleFileSelection(event) {
-    const file =
-        event.target.files &&
-        event.target.files[0];
+    const files = Array.from(event.target.files || []);
+    event.target.value = "";
 
-    if (!file) {
+    if (!files.length) {
         return;
     }
 
-    const normalisedFile =
-        normaliseFileType(file);
+    const normalisedFiles = files.map(normaliseFileType);
+    const unsupported = normalisedFiles.find(
+        file => !ACCEPTED_TYPES.has(file.type)
+    );
+    const oversized = normalisedFiles.find(
+        file => file.size > MAX_FILE_SIZE
+    );
 
-    if (
-        !ACCEPTED_TYPES.has(
-            normalisedFile.type
-        )
-    ) {
-        clearSelectedFile();
-
+    if (unsupported || oversized) {
         setUploadStatus(
-            translate("unsupportedType"),
+            translate(unsupported ? "unsupportedType" : "fileTooLarge"),
             0,
             "error"
         );
-
         return;
     }
 
-    if (
-        normalisedFile.size >
-        MAX_FILE_SIZE
-    ) {
-        clearSelectedFile();
+    selectedFiles = normalisedFiles;
+    renderSelectedFiles();
+    resetUploadStatus();
+}
 
-        setUploadStatus(
-            translate("fileTooLarge"),
-            0,
-            "error"
-        );
-
-        return;
-    }
-
+function renderSelectedFiles() {
     clearPreviewUrl();
 
-    selectedFile =
-        normalisedFile;
+    const firstFile = selectedFiles[0];
+    elements.selectedPhoto.hidden = !firstFile;
+    elements.uploadButton.disabled = isUploading || !firstFile;
 
-    previewUrl =
-        URL.createObjectURL(
-            normalisedFile
-        );
-
-    elements.selectedPhoto.hidden =
-        false;
+    if (!firstFile) {
+        elements.selectedPhotoPreview.removeAttribute("src");
+        return;
+    }
 
     elements.selectedPhotoName.textContent =
-        normalisedFile.name;
-
+        selectedFiles.length === 1
+            ? firstFile.name
+            : formatPhotoCount(selectedFiles.length);
     elements.selectedPhotoSize.textContent =
         formatFileSize(
-            normalisedFile.size
+            selectedFiles.reduce((sum, file) => sum + file.size, 0)
         );
 
-    elements.selectedPhotoPreview.hidden =
-        false;
-
-    elements.previewFallback.hidden =
-        true;
-
-    elements.selectedPhotoPreview.src =
-        previewUrl;
-
-    elements.selectedPhotoPreview.alt =
-        normalisedFile.name;
-
-    elements.selectedPhotoPreview.onerror =
-        () => {
-            elements
-                .selectedPhotoPreview
-                .hidden = true;
-
-            elements
-                .previewFallback
-                .hidden = false;
-        };
-
-    elements.uploadButton.disabled =
-        false;
-
-    resetUploadStatus();
+    previewUrl = URL.createObjectURL(firstFile);
+    elements.selectedPhotoPreview.hidden = false;
+    elements.previewFallback.hidden = true;
+    elements.selectedPhotoPreview.src = previewUrl;
+    elements.selectedPhotoPreview.alt = firstFile.name;
+    elements.selectedPhotoPreview.onerror = () => {
+        elements.selectedPhotoPreview.hidden = true;
+        elements.previewFallback.hidden = false;
+    };
 }
 
 function normaliseFileType(file) {
@@ -910,23 +903,11 @@ function normaliseFileType(file) {
     );
 }
 
-function clearSelectedFile() {
-    selectedFile = null;
-
-    clearPreviewUrl();
-
+function clearSelectedFiles() {
+    selectedFiles = [];
     elements.cameraInput.value = "";
     elements.photoInput.value = "";
-
-    elements.selectedPhoto.hidden =
-        true;
-
-    elements
-        .selectedPhotoPreview
-        .removeAttribute("src");
-
-    elements.uploadButton.disabled =
-        true;
+    renderSelectedFiles();
 }
 
 function clearPreviewUrl() {
@@ -942,105 +923,87 @@ function clearPreviewUrl() {
 async function handleUpload(event) {
     event.preventDefault();
 
-    if (!selectedFile) {
-        setUploadStatus(
-            translate("chooseFirst"),
-            0,
-            "error"
-        );
-
+    if (isUploading) {
         return;
     }
 
-    const fileToUpload =
-        selectedFile;
+    if (!selectedFiles.length) {
+        setUploadStatus(translate("chooseFirst"), 0, "error");
+        return;
+    }
 
-    const authorName =
-        elements.authorInput
-            .value
-            .trim();
+    const total = selectedFiles.length;
+    let uploaded = 0;
+    const authorName = elements.authorInput.value.trim();
 
-    localStorage.setItem(
-        "weddingGalleryAuthorName",
-        authorName
-    );
-
+    localStorage.setItem("weddingGalleryAuthorName", authorName);
     setUploadBusy(true);
 
     try {
-        setUploadStatus(
-            translate(
-                "preparingUpload"
-            ),
-            24
-        );
-
-        const uploadData =
-            await requestUpload(
-                fileToUpload,
-                authorName
+        // The existing API signs one S3 POST per file.
+        for (const file of [...selectedFiles]) {
+            setUploadStatus(
+                translate("preparingUpload"),
+                Math.round((uploaded + 0.1) / total * 100)
             );
 
-        setUploadStatus(
-            translate(
-                "uploadingPhoto"
-            ),
-            62
-        );
+            const uploadData = await requestUpload(file, authorName);
 
-        await uploadToS3(
-            fileToUpload,
-            uploadData.upload
-        );
+            setUploadStatus(
+                translate("uploadingPhotoProgress", {
+                    current: uploaded + 1,
+                    total
+                }),
+                Math.round((uploaded + 0.3) / total * 100)
+            );
 
-        await sleep(2000)
+            await uploadToS3(file, uploadData.upload);
 
-        setUploadStatus(
-            translate(
-                "processingPhoto"
-            ),
-            100,
-            "success"
-        );
+            // Remove only files that reached S3, so retry resumes at the failure.
+            selectedFiles.shift();
+            uploaded++;
+            renderSelectedFiles();
+            setUploadStatus(
+                translate("uploadingPhotoProgress", {
+                    current: uploaded,
+                    total
+                }),
+                Math.round(uploaded / total * 100)
+            );
+        }
 
+        await sleep(2000);
+
+        setUploadStatus(translate("processingPhoto"), 100, "success");
         showToast(
-            translate("uploadToast")
+            translate(
+                total === 1 ? "uploadToast" : "uploadToastMany",
+                { count: total }
+            )
         );
 
-        clearSelectedFile();
+        clearSelectedFiles();
 
-        window.setTimeout(
-            () => void loadPhotos(),
-            2500
-        );
-
-        window.setTimeout(
-            () => void loadPhotos(),
-            6000
-        );
-
-        window.setTimeout(
-            () =>
-                elements
-                    .uploadDialog
-                    .close(),
-            900
-        );
+        window.setTimeout(() => void loadPhotos(), 2500);
+        window.setTimeout(() => void loadPhotos(), 6000);
+        window.setTimeout(() => elements.uploadDialog.close(), 900);
     } catch (error) {
         console.error(error);
 
-        if (
-            !handleAuthenticationError(
-                error
-            )
-        ) {
+        if (!handleAuthenticationError(error)) {
             setUploadStatus(
-                translate(
-                    "uploadFailed"
-                ),
-                0,
+                translate("uploadPartialFailure", {
+                    uploaded,
+                    total,
+                    name: selectedFiles[0]?.name || ""
+                }),
+                Math.round(uploaded / total * 100),
                 "error"
             );
+        }
+
+        if (uploaded) {
+            void loadPhotos();
         }
     } finally {
         setUploadBusy(false);
@@ -1503,9 +1466,11 @@ function formatFileSize(bytes) {
 }
 
 function setUploadBusy(isBusy) {
+    isUploading = isBusy;
     elements.uploadButton.disabled =
         isBusy ||
-        !selectedFile;
+        !selectedFiles.length;
+    elements.removePhotoButton.disabled = isBusy;
 
     elements.cameraButton.disabled =
         isBusy;
@@ -1618,3 +1583,4 @@ function showToast(message) {
             4200
         );
 }
+
