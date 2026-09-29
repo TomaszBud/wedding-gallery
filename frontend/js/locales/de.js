@@ -1,4 +1,6 @@
 export default {
+        videoHelp: "Falls die Wiedergabe nicht klappt, lade das Original herunter.",
+        videoLabel: "Video",
         pageTitle: "Hochzeitsgalerie",
         weddingGallery: "Hochzeitsgalerie",
         heroLead:
@@ -7,17 +9,13 @@ export default {
             "Berge und Wald",
         sharedMoments:
             "Gemeinsame Momente",
-        photos: "Fotos",
+        photos: "Fotos und Videos",
         refreshGallery:
             "Galerie aktualisieren",
-        loadingPhotos:
-            "Fotos werden geladen…",
-        photoOne:
-            "{count} Foto",
-        photoFew:
-            "{count} Fotos",
-        photoMany:
-            "{count} Fotos",
+        loadingPhotos: "Fotos und Videos…",
+        photoOne: "{count} Dateien",
+        photoFew: "{count} Dateien",
+        photoMany: "{count} Dateien",
         galleryError:
             "Die Galerie konnte nicht geladen werden. Bitte versuche es erneut.",
         emptyGallery:
@@ -28,8 +26,7 @@ export default {
             "QR-Code scannen",
         scanQrBody:
             "Öffne die Galerie mit der Einladung, die du bei der Hochzeit findest.",
-        addPhoto:
-            "Foto hinzufügen",
+        addPhoto: "Fotos oder Videos hinzufügen",
         fromYourPerspective:
             "Aus deiner Perspektive",
         addToGallery:
@@ -38,43 +35,32 @@ export default {
         yourName: "Dein Name",
         namePlaceholder:
             "z. B. Anna",
-        choosePhoto:
-            "Foto auswählen",
+        choosePhoto: "Fotos oder Videos auswählen",
         takePhoto:
             "Foto aufnehmen",
         chooseFromLibrary:
             "Aus Galerie wählen",
-        removePhoto:
-            "Foto entfernen",
-        sendPhoto:
-            "Foto senden",
-        fileHint:
-            "JPG, PNG, WebP oder HEIC · max. 20 MB",
-        chooseFirst:
-            "Wähle zuerst ein Foto aus.",
-        fileTooLarge:
-            "Dieses Foto ist zu groß. Maximal sind 20 MB erlaubt.",
-        unsupportedType:
-            "Dieses Fotoformat wird nicht unterstützt.",
+        removePhoto: "Ausgewählte Dateien entfernen",
+        sendPhoto: "Dateien senden",
+        fileHint: "Fotos: JPG, PNG, WebP, HEIC — je bis 20 MB. Videos: MP4, MOV — je bis 200 MB.",
+        chooseFirst: "Wähle zuerst ein Foto oder Video.",
+        fileTooLarge: "Datei leer oder zu groß: 20 MB pro Foto, 200 MB pro Video.",
+        unsupportedType: "Dieses Dateiformat wird nicht unterstützt.",
         preparingUpload:
             "Upload wird vorbereitet…",
-        uploadingPhoto:
-            "Foto wird hochgeladen…",
-        processingPhoto:
-            "Fertig — dein Foto wird verarbeitet.",
+        uploadingPhoto: "Datei {current} von {total} wird hochgeladen…",
+        processingPhoto: "Dateien gesendet! Sie erscheinen gleich in der Galerie.",
         uploadFailed:
             "Das Foto konnte nicht hochgeladen werden. Bitte versuche es erneut.",
-        uploadingPhotoProgress: "Foto {current} von {total} wird hochgeladen…",
+        uploadingPhotoProgress: "Datei {current} von {total} wird hochgeladen…",
         uploadPartialFailure: "{uploaded} von {total} hochgeladen. Fehler bei {name}. Bitte erneut versuchen.",
-        uploadToastMany: "{count} Fotos gesendet! Sie erscheinen gleich in der Galerie.",
-        uploadToast:
-            "Foto gesendet! Es erscheint gleich in der Galerie.",
+        uploadToastMany: "Dateien gesendet! Sie erscheinen gleich in der Galerie.",
+        uploadToast: "Dateien gesendet! Sie erscheinen gleich in der Galerie.",
         anonymous:
             "Hochzeitsgast",
-        photoBy:
-            "Foto von {name}",
-        weddingPhoto:
-            "Foto von Dawids und Maciejs Hochzeit",
+        photoBy: "{name}",
+        weddingPhoto: "Fotos und Videos",
         downloadOriginal:
             "Original herunterladen"
 };
+

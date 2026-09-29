@@ -79,6 +79,9 @@ def process_photo(
     original_size,
 ):
 
+    if object_key.endswith((".mp4", ".mov")):
+        return process_video(photo_id, object_key, original_size)
+
     print(f"Przetwarzamy {object_key}")
 
     response = s3.get_object(
@@ -315,3 +318,34 @@ def mark_failed(
             != "ConditionalCheckFailedException"
         ):
             raise
+
+
+def process_video(photo_id, object_key, original_size):
+    # Do not download a 200 MB video into Lambda memory or pass it to Pillow.
+    head = s3.head_object(Bucket=BUCKET_NAME, Key=object_key)
+    size = head["ContentLength"]
+    content_type = head.get("ContentType")
+    if not 0 < size <= 200 * 1024 * 1024:
+        raise ValueError("Invalid video size")
+    if content_type not in ("video/mp4", "video/quicktime"):
+        raise ValueError("Unsupported video type")
+    now = datetime.now(timezone.utc).isoformat()
+    photos_table.update_item(
+        Key={"photo_id": photo_id},
+        UpdateExpression=(
+            "SET #status = :ready, media_type = :video, "
+            "uploaded_at = if_not_exists(uploaded_at, :now), "
+            "processed_at = :now, display_key = :object_key, "
+            "original_size_bytes = :size REMOVE expires_at"
+        ),
+        ConditionExpression=(
+            "attribute_exists(photo_id) AND object_key = :object_key "
+            "AND content_type = :content_type AND declared_size = :size"
+        ),
+        ExpressionAttributeNames={"#status": "status"},
+        ExpressionAttributeValues={
+            ":ready": "READY", ":video": "video", ":now": now,
+            ":object_key": object_key, ":size": size,
+            ":content_type": content_type,
+        },
+    )

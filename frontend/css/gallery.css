@@ -262,3 +262,6 @@
 .skeleton--tall {
     min-height: 16rem;
 }
+
+
+.video-tile { display: grid; place-items: center; width: 100%; aspect-ratio: 4 / 5; color: var(--green-900); font-size: 1.2rem; background: var(--green-100); }
