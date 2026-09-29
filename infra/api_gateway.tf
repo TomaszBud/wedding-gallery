@@ -5,7 +5,8 @@ resource "aws_apigatewayv2_api" "wedding" {
   cors_configuration {
     # dev only
     allow_origins = [
-      "http://localhost:8000"
+      "http://localhost:8000",
+      "https://tomaszbud.github.io"
     ]
 
     allow_methods = [
@@ -15,7 +16,8 @@ resource "aws_apigatewayv2_api" "wedding" {
     ]
 
     allow_headers = [
-      "content-type"
+      "content-type",
+      "authorization"
     ]
 
     max_age = 3600
