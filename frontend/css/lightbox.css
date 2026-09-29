@@ -91,3 +91,8 @@
     max-height: 100%;
     object-fit: contain;
 }
+
+
+.lightbox__stage video { max-width: 100%; max-height: calc(100dvh - 10rem); }
+.lightbox__stage:has(video:not([hidden])) { grid-template-rows: minmax(0, 1fr) auto; }
+#videoHelp { padding: 0.5rem 1rem; text-align: center; font-size: 0.8rem; }

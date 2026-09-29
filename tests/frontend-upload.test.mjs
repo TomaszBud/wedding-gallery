@@ -90,4 +90,26 @@ test("batch upload resumes with unsent photos after an S3 failure", async () => 
     );
     assert.equal(elements.selectedPhoto.hidden, true);
     assert.equal(toasts.length, 1);
+
+    // Limits apply to each file, including a mixed batch above 20 MB total.
+    events.get("photoInput:change")({ target: { files: [
+        { name: "clip.mp4", type: "video/mp4", size: 150 * 1024 ** 2 },
+        { name: "photo.jpg", type: "image/jpeg", size: 15 * 1024 ** 2 },
+        { name: "clip.mov", type: "video/quicktime", size: 200 * 1024 ** 2 }
+    ], value: "" } });
+    assert.equal(elements.uploadButton.disabled, false);
+    assert.equal(elements.previewFallback.hidden, false);
+    await events.get("uploadForm:submit")({ preventDefault() {} });
+    assert.deepEqual(signed.slice(-3), ["clip.mp4", "photo.jpg", "clip.mov"]);
+
+    for (const file of [
+        { name: "large.mp4", type: "video/mp4", size: 200 * 1024 ** 2 + 1 },
+        { name: "large.jpg", type: "image/jpeg", size: 20 * 1024 ** 2 + 1 },
+        { name: "unsupported.webm", type: "video/webm", size: 1024 }
+    ]) {
+        events.get("photoInput:change")({ target: { files: [file], value: "" } });
+        assert.equal(elements.status.className, "is-error");
+        assert.equal(elements.uploadButton.disabled, true);
+    }
 });
+

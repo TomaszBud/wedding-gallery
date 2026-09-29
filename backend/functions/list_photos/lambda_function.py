@@ -74,11 +74,12 @@ def handler(event, context):
             ExpiresIn=900,
         )
 
-        thumbnail_url = s3.generate_presigned_url(
+        is_video = item.get("content_type", "").startswith("video/")
+        thumbnail_url = None if is_video else s3.generate_presigned_url(
             "get_object",
             Params={
                 "Bucket": BUCKET_NAME,
-                "Key": item["thumbnail_key"],
+                "Key": item.get("thumbnail_key", item["object_key"]),
             },
             ExpiresIn=900,
         )
@@ -94,6 +95,8 @@ def handler(event, context):
 
         photos.append({
             "photoId": item["photo_id"],
+            "mediaType": "video" if is_video else "image",
+            "contentType": item.get("content_type", "image/jpeg"),
             "authorName": item.get(
                 "author_name",
                 "",

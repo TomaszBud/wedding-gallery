@@ -4,12 +4,13 @@ import {
 } from "../i18n.js";
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
+const MAX_VIDEO_SIZE = 200 * 1024 * 1024;
 const ACCEPTED_TYPES = new Set([
-    "image/jpeg", "image/png", "image/webp", "image/heic", "image/heif"
+    "image/jpeg", "image/png", "image/webp", "image/heic", "image/heif", "video/mp4", "video/quicktime"
 ]);
 const INFERRED_TYPES = {
     jpg: "image/jpeg", jpeg: "image/jpeg", png: "image/png",
-    webp: "image/webp", heic: "image/heic", heif: "image/heif"
+    webp: "image/webp", heic: "image/heic", heif: "image/heif", mp4: "video/mp4", mov: "video/quicktime"
 };
 
 function normaliseFileType(file) {
@@ -55,6 +56,12 @@ export function createUpload(elements, {
             selectedFiles.reduce((sum, file) => sum + file.size, 0)
         );
 
+        if (firstFile.type.startsWith("video/")) {
+            elements.selectedPhotoPreview.removeAttribute("src");
+            elements.selectedPhotoPreview.hidden = true;
+            elements.previewFallback.hidden = false;
+            return;
+        }
         previewUrl = URL.createObjectURL(firstFile);
         elements.selectedPhotoPreview.hidden = false;
         elements.previewFallback.hidden = true;
@@ -108,7 +115,9 @@ export function createUpload(elements, {
             file => !ACCEPTED_TYPES.has(file.type)
         );
         const oversized = normalised.some(
-            file => file.size > MAX_FILE_SIZE
+            file => file.size <= 0 || file.size > (
+                file.type.startsWith("video/") ? MAX_VIDEO_SIZE : MAX_FILE_SIZE
+            )
         );
         if (unsupported || oversized) {
             setStatus(
@@ -221,3 +230,4 @@ export function createUpload(elements, {
 
     return { bind, isBusy: () => isUploading };
 }
+

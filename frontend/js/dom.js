@@ -7,7 +7,7 @@ const ids = [
     "selectedPhoto", "selectedPhotoPreview", "previewFallback",
     "selectedPhotoName", "selectedPhotoSize", "removePhotoButton",
     "uploadButton", "uploadProgress", "uploadProgressBar", "status",
-    "lightbox", "lightboxImage", "lightboxMeta",
+    "lightbox", "lightboxImage", "lightboxVideo", "videoHelp", "lightboxMeta",
     "downloadPhotoButton", "closeLightboxButton", "toast"
 ];
 
@@ -18,3 +18,4 @@ export function getElements() {
         return [id, element];
     }));
 }
+

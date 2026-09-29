@@ -6,8 +6,23 @@ import {
 export function createGallery(elements, { handleAuthenticationError }) {
     let lastLoad = 0;
 
+    elements.lightbox.addEventListener("close", () => {
+        elements.lightboxVideo.pause();
+        elements.lightboxVideo.removeAttribute("src");
+        elements.lightboxVideo.load();
+    });
+
     function openLightbox(photo) {
-        elements.lightboxImage.src = photo.displayUrl;
+        const isVideo = photo.mediaType === "video";
+        elements.lightboxImage.hidden = isVideo;
+        elements.lightboxVideo.hidden = !isVideo;
+        elements.videoHelp.hidden = !isVideo;
+        elements.lightboxVideo.pause();
+        elements.lightboxVideo.removeAttribute("src");
+        if (isVideo) elements.lightboxVideo.src = photo.displayUrl;
+        elements.lightboxVideo.load();
+        if (!isVideo) elements.lightboxImage.src = photo.displayUrl;
+        else elements.lightboxImage.removeAttribute("src");
         elements.lightboxImage.alt = photo.authorName
             ? translate("photoBy", { name: photo.authorName })
             : translate("weddingPhoto");
@@ -74,7 +89,14 @@ export function createGallery(elements, { handleAuthenticationError }) {
             author.className = "photo-card__author";
             author.textContent = photo.authorName || translate("anonymous");
 
-            button.append(image, author);
+            if (photo.mediaType === "video") {
+                const tile = document.createElement("span");
+                tile.className = "video-tile";
+                tile.textContent = "▶ " + translate("videoLabel");
+                button.append(tile, author);
+            } else {
+                button.append(image, author);
+            }
             button.addEventListener("click", () => openLightbox(photo));
             article.appendChild(button);
             fragment.appendChild(article);
@@ -109,3 +131,4 @@ export function createGallery(elements, { handleAuthenticationError }) {
 
     return { loadPhotos, getLastLoad: () => lastLoad };
 }
+

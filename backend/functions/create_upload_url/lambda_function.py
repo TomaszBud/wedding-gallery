@@ -12,6 +12,7 @@ BUCKET_NAME = os.environ["PHOTOS_BUCKET"]
 TABLE_NAME = os.environ["PHOTOS_TABLE"]
 
 MAX_FILE_SIZE = 20 * 1024 * 1024
+MAX_VIDEO_SIZE = 200 * 1024 * 1024
 
 ALLOWED_TYPES = {
     "image/jpeg": ".jpg",
@@ -19,6 +20,8 @@ ALLOWED_TYPES = {
     "image/webp": ".webp",
     "image/heic": ".heic",
     "image/heif": ".heif",
+    "video/mp4": ".mp4",
+    "video/quicktime": ".mov",
 }
 
 
@@ -78,13 +81,14 @@ def handler(event, context):
             },
         )
 
-    if not isinstance(file_size, int):
+    if isinstance(file_size, bool) or not isinstance(file_size, int):
         return response(
             400,
             {"error": "fileSize is required"},
         )
 
-    if file_size <= 0 or file_size > MAX_FILE_SIZE:
+    max_size = MAX_VIDEO_SIZE if content_type.startswith("video/") else MAX_FILE_SIZE
+    if file_size <= 0 or file_size > max_size:
         return response(
             400,
             {"error": "Invalid file size"},
@@ -116,10 +120,10 @@ def handler(event, context):
             [
                 "content-length-range",
                 1,
-                MAX_FILE_SIZE,
+                max_size,
             ],
         ],
-        ExpiresIn=300,
+        ExpiresIn=900,
     )
 
     photos_table.put_item(
